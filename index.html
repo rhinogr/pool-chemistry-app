@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pool Chemistry Tool</title>
+
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#0f172a;
+color:white;
+margin:0;
+padding:20px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:5px 0 15px 0;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+button{
+padding:12px;
+background:#22c55e;
+border:none;
+border-radius:8px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+function App(){
+
+return(
+<div>
+
+<h1>Pool Chemistry App (Field Test)</h1>
+
+<div className="card">
+
+<label>Customer</label>
+<select>
+<option>Select Customer</option>
+</select>
+
+<label>Pool Gallons</label>
+<input type="number"/>
+
+<label>Free Chlorine</label>
+<input type="number"/>
+
+<label>pH</label>
+<input type="number"/>
+
+<label>Alkalinity</label>
+<input type="number"/>
+
+<button>Calculate Treatment</button>
+
+</div>
+
+</div>
+)
+
+}
+
+ReactDOM.render(<App/>, document.getElementById("root"));
+
+</script>
+
+</body>
+</html>

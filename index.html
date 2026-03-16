@@ -1,90 +1,442 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pool Chemistry Tool</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pool Chemistry App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 16px;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-<style>
-body{
-font-family: Arial, sans-serif;
-background:#0f172a;
-color:white;
-margin:0;
-padding:20px;
-}
+    .card {
+      background: #1e293b;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
 
-input,select{
-width:100%;
-padding:10px;
-margin:5px 0 15px 0;
-}
+    h1, h2, h3 {
+      margin-top: 0;
+    }
 
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
 
-button{
-padding:12px;
-background:#22c55e;
-border:none;
-border-radius:8px;
-font-weight:bold;
-}
-</style>
+    @media (min-width: 700px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #cbd5e1;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      background: #22c55e;
+      color: #052e16;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    button.secondary {
+      background: #38bdf8;
+      color: #082f49;
+    }
+
+    button.danger {
+      background: #f87171;
+      color: #450a0a;
+    }
+
+    .result {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 12px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .muted {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .history-item {
+      padding: 10px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #0f172a;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h1>Pool Chemistry App</h1>
 
-<div id="root"></div>
+    <div class="card">
+      <h2>Customer</h2>
 
-<script type="text/babel">
+      <label for="customerSelect">Select Customer</label>
+      <select id="customerSelect"></select>
 
-function App(){
+      <button onclick="addCustomer()">Add Customer</button>
+      <button class="secondary" onclick="saveCustomerDefaults()">Save Pool Defaults</button>
+      <button class="danger" onclick="deleteSelectedCustomer()">Delete Customer</button>
+    </div>
 
-return(
-<div>
+    <div class="card">
+      <h2>Customer / Pool Profile</h2>
 
-<h1>Pool Chemistry App (Field Test)</h1>
+      <div class="grid grid-2">
+        <div>
+          <label for="customerName">Customer Name</label>
+          <input id="customerName" placeholder="Customer name" />
+        </div>
 
-<div className="card">
+        <div>
+          <label for="poolGallons">Pool Gallons</label>
+          <input id="poolGallons" type="number" placeholder="15000" />
+        </div>
 
-<label>Customer</label>
-<select>
-<option>Select Customer</option>
-</select>
+        <div>
+          <label for="surfaceType">Surface Type</label>
+          <select id="surfaceType">
+            <option value="plaster">Plaster / Gunite</option>
+            <option value="vinyl">Vinyl</option>
+            <option value="fiberglass">Fiberglass</option>
+          </select>
+        </div>
 
-<label>Pool Gallons</label>
-<input type="number"/>
+        <div>
+          <label for="sanitizerType">Sanitizer Type</label>
+          <select id="sanitizerType">
+            <option value="liquid">Liquid Chlorine</option>
+            <option value="calHypo">Cal-Hypo</option>
+            <option value="tabs">Tabs</option>
+            <option value="salt">Salt System</option>
+          </select>
+        </div>
 
-<label>Free Chlorine</label>
-<input type="number"/>
+        <div>
+          <label for="saltPool">Salt Pool?</label>
+          <select id="saltPool">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
 
-<label>pH</label>
-<input type="number"/>
+        <div>
+          <label for="notes">Pool Notes</label>
+          <input id="notes" placeholder="Service notes, gate code, algae history, etc." />
+        </div>
+      </div>
+    </div>
 
-<label>Alkalinity</label>
-<input type="number"/>
+    <div class="card">
+      <h2>Water Test — AquaChek Silver 7-in-1</h2>
+      <p class="muted">
+        These seven fields match AquaChek Silver 7-in-1: Total Hardness, Total Chlorine,
+        Total Bromine, Free Chlorine, pH, Total Alkalinity, and Stabilizer (Cyanuric Acid). :contentReference[oaicite:1]{index=1}
+      </p>
 
-<button>Calculate Treatment</button>
+      <div class="grid grid-2">
+        <div>
+          <label for="totalHardness">Total Hardness (ppm)</label>
+          <input id="totalHardness" type="number" />
+        </div>
 
-</div>
+        <div>
+          <label for="totalChlorine">Total Chlorine (ppm)</label>
+          <input id="totalChlorine" type="number" />
+        </div>
 
-</div>
-)
+        <div>
+          <label for="totalBromine">Total Bromine (ppm)</label>
+          <input id="totalBromine" type="number" />
+        </div>
 
-}
+        <div>
+          <label for="freeChlorine">Free Chlorine (ppm)</label>
+          <input id="freeChlorine" type="number" />
+        </div>
 
-ReactDOM.render(<App/>, document.getElementById("root"));
+        <div>
+          <label for="ph">pH</label>
+          <input id="ph" type="number" step="0.1" />
+        </div>
 
-</script>
+        <div>
+          <label for="totalAlkalinity">Total Alkalinity (ppm)</label>
+          <input id="totalAlkalinity" type="number" />
+        </div>
 
+        <div>
+          <label for="stabilizer">Stabilizer / CYA (ppm)</label>
+          <input id="stabilizer" type="number" />
+        </div>
+      </div>
+
+      <button onclick="analyzeWater()">Analyze Water</button>
+      <button class="secondary" onclick="saveVisit()">Save Visit Log</button>
+    </div>
+
+    <div class="card">
+      <h2>Recommendations</h2>
+      <div id="results" class="result">No analysis yet.</div>
+    </div>
+
+    <div class="card">
+      <h2>Visit History</h2>
+      <div id="history"></div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "poolAppCustomersV2";
+    let customers = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    function saveAll() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+    }
+
+    function getSelectedIndex() {
+      return Number(document.getElementById("customerSelect").value);
+    }
+
+    function renderCustomerSelect() {
+      const select = document.getElementById("customerSelect");
+      select.innerHTML = "";
+
+      if (customers.length === 0) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.textContent = "No customers yet";
+        select.appendChild(opt);
+        clearForm();
+        renderHistory();
+        return;
+      }
+
+      customers.forEach((customer, index) => {
+        const opt = document.createElement("option");
+        opt.value = index;
+        opt.textContent = customer.name || `Customer ${index + 1}`;
+        select.appendChild(opt);
+      });
+
+      select.value = "0";
+      loadSelectedCustomer();
+    }
+
+    function clearForm() {
+      document.getElementById("customerName").value = "";
+      document.getElementById("poolGallons").value = "";
+      document.getElementById("surfaceType").value = "plaster";
+      document.getElementById("sanitizerType").value = "liquid";
+      document.getElementById("saltPool").value = "no";
+      document.getElementById("notes").value = "";
+
+      document.getElementById("totalHardness").value = "";
+      document.getElementById("totalChlorine").value = "";
+      document.getElementById("totalBromine").value = "";
+      document.getElementById("freeChlorine").value = "";
+      document.getElementById("ph").value = "";
+      document.getElementById("totalAlkalinity").value = "";
+      document.getElementById("stabilizer").value = "";
+
+      document.getElementById("results").innerHTML = "No analysis yet.";
+    }
+
+    function addCustomer() {
+      const newCustomer = {
+        name: `Customer ${customers.length + 1}`,
+        poolGallons: "",
+        surfaceType: "plaster",
+        sanitizerType: "liquid",
+        saltPool: "no",
+        notes: "",
+        history: []
+      };
+
+      customers.push(newCustomer);
+      saveAll();
+      renderCustomerSelect();
+      document.getElementById("customerSelect").value = String(customers.length - 1);
+      loadSelectedCustomer();
+    }
+
+    function deleteSelectedCustomer() {
+      if (customers.length === 0) return;
+      const idx = getSelectedIndex();
+      if (!Number.isInteger(idx)) return;
+
+      customers.splice(idx, 1);
+      saveAll();
+      renderCustomerSelect();
+    }
+
+    function loadSelectedCustomer() {
+      const idx = getSelectedIndex();
+      const customer = customers[idx];
+      if (!customer) return;
+
+      document.getElementById("customerName").value = customer.name || "";
+      document.getElementById("poolGallons").value = customer.poolGallons || "";
+      document.getElementById("surfaceType").value = customer.surfaceType || "plaster";
+      document.getElementById("sanitizerType").value = customer.sanitizerType || "liquid";
+      document.getElementById("saltPool").value = customer.saltPool || "no";
+      document.getElementById("notes").value = customer.notes || "";
+
+      renderHistory();
+    }
+
+    function saveCustomerDefaults() {
+      const idx = getSelectedIndex();
+      if (!customers[idx]) return;
+
+      customers[idx].name = document.getElementById("customerName").value.trim() || `Customer ${idx + 1}`;
+      customers[idx].poolGallons = document.getElementById("poolGallons").value;
+      customers[idx].surfaceType = document.getElementById("surfaceType").value;
+      customers[idx].sanitizerType = document.getElementById("sanitizerType").value;
+      customers[idx].saltPool = document.getElementById("saltPool").value;
+      customers[idx].notes = document.getElementById("notes").value.trim();
+
+      saveAll();
+      renderCustomerSelect();
+      document.getElementById("customerSelect").value = String(idx);
+    }
+
+    function analyzeWater() {
+      const fc = parseFloat(document.getElementById("freeChlorine").value || 0);
+      const ph = parseFloat(document.getElementById("ph").value || 0);
+      const ta = parseFloat(document.getElementById("totalAlkalinity").value || 0);
+      const th = parseFloat(document.getElementById("totalHardness").value || 0);
+      const cya = parseFloat(document.getElementById("stabilizer").value || 0);
+      const tc = parseFloat(document.getElementById("totalChlorine").value || 0);
+      const bromine = parseFloat(document.getElementById("totalBromine").value || 0);
+
+      let messages = [];
+
+      if (fc < 3) messages.push("Free chlorine is low.");
+      else if (fc > 7) messages.push("Free chlorine is high.");
+      else messages.push("Free chlorine is in range.");
+
+      if (ph < 7.4) messages.push("pH is low.");
+      else if (ph > 7.8) messages.push("pH is high.");
+      else messages.push("pH is in range.");
+
+      if (ta < 70) messages.push("Total alkalinity is low.");
+      else if (ta > 120) messages.push("Total alkalinity is high.");
+      else messages.push("Total alkalinity is in range.");
+
+      if (th < 200) messages.push("Total hardness is low.");
+      else if (th > 500) messages.push("Total hardness is high.");
+      else messages.push("Total hardness is in range.");
+
+      if (cya < 30) messages.push("Stabilizer is low.");
+      else if (cya > 80) messages.push("Stabilizer is high.");
+      else messages.push("Stabilizer is in range.");
+
+      if (tc > 0 && fc > 0) {
+        const cc = Math.max(0, tc - fc).toFixed(1);
+        messages.push(`Estimated combined chlorine: ${cc} ppm.`);
+      }
+
+      if (bromine > 0) {
+        messages.push(`Bromine reading logged: ${bromine} ppm.`);
+      }
+
+      document.getElementById("results").innerHTML = messages.join("<br>");
+    }
+
+    function saveVisit() {
+      const idx = getSelectedIndex();
+      if (!customers[idx]) return;
+
+      const visit = {
+        date: new Date().toLocaleString(),
+        totalHardness: document.getElementById("totalHardness").value,
+        totalChlorine: document.getElementById("totalChlorine").value,
+        totalBromine: document.getElementById("totalBromine").value,
+        freeChlorine: document.getElementById("freeChlorine").value,
+        ph: document.getElementById("ph").value,
+        totalAlkalinity: document.getElementById("totalAlkalinity").value,
+        stabilizer: document.getElementById("stabilizer").value,
+        resultText: document.getElementById("results").innerHTML
+      };
+
+      if (!customers[idx].history) customers[idx].history = [];
+      customers[idx].history.unshift(visit);
+
+      saveAll();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const idx = getSelectedIndex();
+      const historyEl = document.getElementById("history");
+      historyEl.innerHTML = "";
+
+      if (!customers[idx] || !customers[idx].history || customers[idx].history.length === 0) {
+        historyEl.innerHTML = '<div class="muted">No visit history yet.</div>';
+        return;
+      }
+
+      customers[idx].history.forEach((visit) => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+          <strong>${visit.date}</strong><br>
+          TH: ${visit.totalHardness || "-"} ppm |
+          TC: ${visit.totalChlorine || "-"} ppm |
+          TB: ${visit.totalBromine || "-"} ppm |
+          FC: ${visit.freeChlorine || "-"} ppm |
+          pH: ${visit.ph || "-"} |
+          TA: ${visit.totalAlkalinity || "-"} ppm |
+          CYA: ${visit.stabilizer || "-"} ppm
+          <div class="muted" style="margin-top:8px;">${visit.resultText || ""}</div>
+        `;
+        historyEl.appendChild(div);
+      });
+    }
+
+    document.getElementById("customerSelect").addEventListener("change", loadSelectedCustomer);
+
+    renderCustomerSelect();
+  </script>
 </body>
 </html>

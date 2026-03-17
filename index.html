@@ -12,42 +12,34 @@
       margin: 0;
       padding: 16px;
     }
-
     .container {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
     }
-
     .card {
       background: #1e293b;
       padding: 16px;
       border-radius: 12px;
       margin-bottom: 16px;
     }
-
     h1, h2, h3 {
       margin-top: 0;
     }
-
     .grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
     }
-
-    @media (min-width: 700px) {
-      .grid-2 {
-        grid-template-columns: 1fr 1fr;
-      }
+    @media (min-width: 800px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
     }
-
     label {
       display: block;
       font-size: 14px;
       margin-bottom: 6px;
       color: #cbd5e1;
     }
-
     input, select, textarea {
       width: 100%;
       box-sizing: border-box;
@@ -58,7 +50,6 @@
       color: white;
       margin-bottom: 12px;
     }
-
     button {
       padding: 10px 14px;
       border: none;
@@ -70,36 +61,54 @@
       margin-right: 8px;
       margin-bottom: 8px;
     }
-
     button.secondary {
       background: #38bdf8;
       color: #082f49;
     }
-
     button.danger {
       background: #f87171;
       color: #450a0a;
     }
-
     .result {
       background: #0f172a;
       border: 1px solid #334155;
       padding: 12px;
       border-radius: 8px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
-
     .muted {
       color: #94a3b8;
       font-size: 14px;
     }
-
     .history-item {
       padding: 10px;
       border: 1px solid #334155;
       border-radius: 8px;
       margin-bottom: 10px;
       background: #0f172a;
+    }
+    .chem-line {
+      padding: 8px 0;
+      border-bottom: 1px solid #334155;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #334155;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    .totals {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .warning {
+      color: #fbbf24;
+    }
+    .good {
+      color: #86efac;
     }
   </style>
 </head>
@@ -109,10 +118,8 @@
 
     <div class="card">
       <h2>Customer</h2>
-
       <label for="customerSelect">Select Customer</label>
       <select id="customerSelect"></select>
-
       <button onclick="addCustomer()">Add Customer</button>
       <button class="secondary" onclick="saveCustomerDefaults()">Save Pool Defaults</button>
       <button class="danger" onclick="deleteSelectedCustomer()">Delete Customer</button>
@@ -120,18 +127,15 @@
 
     <div class="card">
       <h2>Customer / Pool Profile</h2>
-
       <div class="grid grid-2">
         <div>
           <label for="customerName">Customer Name</label>
           <input id="customerName" placeholder="Customer name" />
         </div>
-
         <div>
           <label for="poolGallons">Pool Gallons</label>
           <input id="poolGallons" type="number" placeholder="15000" />
         </div>
-
         <div>
           <label for="surfaceType">Surface Type</label>
           <select id="surfaceType">
@@ -140,9 +144,8 @@
             <option value="fiberglass">Fiberglass</option>
           </select>
         </div>
-
         <div>
-          <label for="sanitizerType">Sanitizer Type</label>
+          <label for="sanitizerType">Normal Sanitizer Type</label>
           <select id="sanitizerType">
             <option value="liquid">Liquid Chlorine</option>
             <option value="calHypo">Cal-Hypo</option>
@@ -150,7 +153,6 @@
             <option value="salt">Salt System</option>
           </select>
         </div>
-
         <div>
           <label for="saltPool">Salt Pool?</label>
           <select id="saltPool">
@@ -158,57 +160,78 @@
             <option value="yes">Yes</option>
           </select>
         </div>
-
         <div>
-          <label for="notes">Pool Notes</label>
-          <input id="notes" placeholder="Service notes, gate code, algae history, etc." />
+          <label for="poolNotes">Pool Notes</label>
+          <input id="poolNotes" placeholder="Gate code, algae history, special notes" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Chemical Costs</h2>
+      <div class="grid grid-3">
+        <div>
+          <label for="costLiquid">Liquid Chlorine Cost per Gallon ($)</label>
+          <input id="costLiquid" type="number" step="0.01" value="5.00" />
+        </div>
+        <div>
+          <label for="costAcid">Muriatic Acid Cost per Gallon ($)</label>
+          <input id="costAcid" type="number" step="0.01" value="9.00" />
+        </div>
+        <div>
+          <label for="costCalHypo">Cal-Hypo Cost per Pound ($)</label>
+          <input id="costCalHypo" type="number" step="0.01" value="4.50" />
+        </div>
+        <div>
+          <label for="costBicarb">Bicarbonate Cost per Pound ($)</label>
+          <input id="costBicarb" type="number" step="0.01" value="1.20" />
+        </div>
+        <div>
+          <label for="costSodaAsh">Soda Ash Cost per Pound ($)</label>
+          <input id="costSodaAsh" type="number" step="0.01" value="1.80" />
+        </div>
+        <div>
+          <label for="costStabilizer">Stabilizer Cost per Pound ($)</label>
+          <input id="costStabilizer" type="number" step="0.01" value="4.00" />
         </div>
       </div>
     </div>
 
     <div class="card">
       <h2>Water Test — AquaChek Silver 7-in-1</h2>
-      <p class="muted">
-        These seven fields match AquaChek Silver 7-in-1: Total Hardness, Total Chlorine,
-        Total Bromine, Free Chlorine, pH, Total Alkalinity, and Stabilizer (Cyanuric Acid). :contentReference[oaicite:1]{index=1}
-      </p>
-
       <div class="grid grid-2">
         <div>
           <label for="totalHardness">Total Hardness (ppm)</label>
           <input id="totalHardness" type="number" />
         </div>
-
         <div>
           <label for="totalChlorine">Total Chlorine (ppm)</label>
           <input id="totalChlorine" type="number" />
         </div>
-
         <div>
           <label for="totalBromine">Total Bromine (ppm)</label>
           <input id="totalBromine" type="number" />
         </div>
-
         <div>
           <label for="freeChlorine">Free Chlorine (ppm)</label>
           <input id="freeChlorine" type="number" />
         </div>
-
         <div>
           <label for="ph">pH</label>
           <input id="ph" type="number" step="0.1" />
         </div>
-
         <div>
           <label for="totalAlkalinity">Total Alkalinity (ppm)</label>
           <input id="totalAlkalinity" type="number" />
         </div>
-
         <div>
           <label for="stabilizer">Stabilizer / CYA (ppm)</label>
           <input id="stabilizer" type="number" />
         </div>
       </div>
+
+      <label for="conditionNotes">Observed Conditions</label>
+      <textarea id="conditionNotes" rows="3" placeholder="Cloudy water, green algae, black algae, yellow algae, staining, strong chlorine smell, etc."></textarea>
 
       <button onclick="analyzeWater()">Analyze Water</button>
       <button class="secondary" onclick="saveVisit()">Save Visit Log</button>
@@ -220,21 +243,91 @@
     </div>
 
     <div class="card">
+      <h2>Estimated Chemical Cost This Visit</h2>
+      <div id="visitCost" class="result">$0.00</div>
+    </div>
+
+    <div class="card">
+      <h2>Customer Totals</h2>
+      <div id="customerTotals" class="result totals">No customer selected.</div>
+    </div>
+
+    <div class="card">
       <h2>Visit History</h2>
       <div id="history"></div>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = "poolAppCustomersV2";
+    const STORAGE_KEY = "poolAppCustomersV3";
     let customers = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    let lastAnalysis = null;
 
     function saveAll() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
     }
 
+    function num(id) {
+      return parseFloat(document.getElementById(id).value || 0);
+    }
+
+    function val(id) {
+      return document.getElementById(id).value;
+    }
+
+    function round(n, d = 2) {
+      return Number(n.toFixed(d));
+    }
+
+    function formatMoney(n) {
+      return "$" + round(n, 2).toFixed(2);
+    }
+
+    function formatLiquid(gallons) {
+      if (gallons >= 1) return `${round(gallons, 2)} gal (${round(gallons * 4, 1)} qt)`;
+      return `${round(gallons * 4, 1)} qt (${round(gallons, 2)} gal)`;
+    }
+
+    function gallonsLiquidChlorine(poolGallons, ppmIncrease, strengthPercent = 10) {
+      return (ppmIncrease * poolGallons) / (10000 * strengthPercent);
+    }
+
+    function gallonsAcidForPH(poolGallons, currentPH, targetPH, ta) {
+      if (currentPH <= targetPH) return 0;
+      const delta = currentPH - targetPH;
+      const taFactor = Math.max(0.7, Math.min(1.4, ta / 100 || 1));
+      const ozPer10kPerPH = 52;
+      const flOz = (poolGallons / 10000) * delta * ozPer10kPerPH * taFactor;
+      return flOz / 128;
+    }
+
+    function lbsCalHypo(poolGallons, ppmIncrease, strengthPercent = 73) {
+      const ppmPerLbPer10k = strengthPercent * 0.12;
+      return (ppmIncrease * poolGallons) / (10000 * ppmPerLbPer10k);
+    }
+
+    function lbsBicarb(poolGallons, ppmIncrease) {
+      return (ppmIncrease / 10) * (poolGallons / 10000) * 1.4;
+    }
+
+    function lbsSodaAsh(poolGallons, currentPH, targetPH) {
+      if (currentPH >= targetPH) return 0;
+      const delta = targetPH - currentPH;
+      return (poolGallons / 10000) * delta * 0.75;
+    }
+
+    function lbsStabilizer(poolGallons, ppmIncrease) {
+      const ounces = (ppmIncrease / 10) * (poolGallons / 10000) * 13;
+      return ounces / 16;
+    }
+
     function getSelectedIndex() {
       return Number(document.getElementById("customerSelect").value);
+    }
+
+    function getSelectedCustomer() {
+      const idx = getSelectedIndex();
+      return customers[idx];
     }
 
     function renderCustomerSelect() {
@@ -248,6 +341,7 @@
         select.appendChild(opt);
         clearForm();
         renderHistory();
+        renderCustomerTotals();
         return;
       }
 
@@ -268,8 +362,7 @@
       document.getElementById("surfaceType").value = "plaster";
       document.getElementById("sanitizerType").value = "liquid";
       document.getElementById("saltPool").value = "no";
-      document.getElementById("notes").value = "";
-
+      document.getElementById("poolNotes").value = "";
       document.getElementById("totalHardness").value = "";
       document.getElementById("totalChlorine").value = "";
       document.getElementById("totalBromine").value = "";
@@ -277,8 +370,10 @@
       document.getElementById("ph").value = "";
       document.getElementById("totalAlkalinity").value = "";
       document.getElementById("stabilizer").value = "";
-
+      document.getElementById("conditionNotes").value = "";
       document.getElementById("results").innerHTML = "No analysis yet.";
+      document.getElementById("visitCost").innerHTML = "$0.00";
+      lastAnalysis = null;
     }
 
     function addCustomer() {
@@ -288,10 +383,9 @@
         surfaceType: "plaster",
         sanitizerType: "liquid",
         saltPool: "no",
-        notes: "",
+        poolNotes: "",
         history: []
       };
-
       customers.push(newCustomer);
       saveAll();
       renderCustomerSelect();
@@ -303,15 +397,13 @@
       if (customers.length === 0) return;
       const idx = getSelectedIndex();
       if (!Number.isInteger(idx)) return;
-
       customers.splice(idx, 1);
       saveAll();
       renderCustomerSelect();
     }
 
     function loadSelectedCustomer() {
-      const idx = getSelectedIndex();
-      const customer = customers[idx];
+      const customer = getSelectedCustomer();
       if (!customer) return;
 
       document.getElementById("customerName").value = customer.name || "";
@@ -319,119 +411,322 @@
       document.getElementById("surfaceType").value = customer.surfaceType || "plaster";
       document.getElementById("sanitizerType").value = customer.sanitizerType || "liquid";
       document.getElementById("saltPool").value = customer.saltPool || "no";
-      document.getElementById("notes").value = customer.notes || "";
+      document.getElementById("poolNotes").value = customer.poolNotes || "";
 
       renderHistory();
+      renderCustomerTotals();
     }
 
     function saveCustomerDefaults() {
       const idx = getSelectedIndex();
       if (!customers[idx]) return;
 
-      customers[idx].name = document.getElementById("customerName").value.trim() || `Customer ${idx + 1}`;
-      customers[idx].poolGallons = document.getElementById("poolGallons").value;
-      customers[idx].surfaceType = document.getElementById("surfaceType").value;
-      customers[idx].sanitizerType = document.getElementById("sanitizerType").value;
-      customers[idx].saltPool = document.getElementById("saltPool").value;
-      customers[idx].notes = document.getElementById("notes").value.trim();
+      customers[idx].name = val("customerName").trim() || `Customer ${idx + 1}`;
+      customers[idx].poolGallons = val("poolGallons");
+      customers[idx].surfaceType = val("surfaceType");
+      customers[idx].sanitizerType = val("sanitizerType");
+      customers[idx].saltPool = val("saltPool");
+      customers[idx].poolNotes = val("poolNotes").trim();
 
       saveAll();
       renderCustomerSelect();
       document.getElementById("customerSelect").value = String(idx);
+      loadSelectedCustomer();
     }
 
     function analyzeWater() {
-      const fc = parseFloat(document.getElementById("freeChlorine").value || 0);
-      const ph = parseFloat(document.getElementById("ph").value || 0);
-      const ta = parseFloat(document.getElementById("totalAlkalinity").value || 0);
-      const th = parseFloat(document.getElementById("totalHardness").value || 0);
-      const cya = parseFloat(document.getElementById("stabilizer").value || 0);
-      const tc = parseFloat(document.getElementById("totalChlorine").value || 0);
-      const bromine = parseFloat(document.getElementById("totalBromine").value || 0);
+      const poolGallons = num("poolGallons") || 15000;
+      const surfaceType = val("surfaceType");
+      const sanitizerType = val("sanitizerType");
+      const saltPool = val("saltPool");
+      const notes = val("conditionNotes").toLowerCase();
 
-      let messages = [];
+      const th = num("totalHardness");
+      const tc = num("totalChlorine");
+      const tb = num("totalBromine");
+      const fc = num("freeChlorine");
+      const ph = num("ph");
+      const ta = num("totalAlkalinity");
+      const cya = num("stabilizer");
 
-      if (fc < 3) messages.push("Free chlorine is low.");
-      else if (fc > 7) messages.push("Free chlorine is high.");
-      else messages.push("Free chlorine is in range.");
+      const idealCHMin = surfaceType === "plaster" ? 250 : 150;
+      const idealCHTarget = surfaceType === "plaster" ? 300 : 200;
+      const idealCHMax = surfaceType === "plaster" ? 400 : 250;
+      const idealCYAMin = saltPool === "yes" ? 60 : 30;
+      const idealCYATarget = saltPool === "yes" ? 70 : 40;
+      const idealCYAMax = saltPool === "yes" ? 80 : 50;
 
-      if (ph < 7.4) messages.push("pH is low.");
-      else if (ph > 7.8) messages.push("pH is high.");
-      else messages.push("pH is in range.");
+      const chemicals = [];
+      const messages = [];
+      let totalCost = 0;
 
-      if (ta < 70) messages.push("Total alkalinity is low.");
-      else if (ta > 120) messages.push("Total alkalinity is high.");
-      else messages.push("Total alkalinity is in range.");
+      const cc = Math.max(0, tc - fc);
 
-      if (th < 200) messages.push("Total hardness is low.");
-      else if (th > 500) messages.push("Total hardness is high.");
-      else messages.push("Total hardness is in range.");
-
-      if (cya < 30) messages.push("Stabilizer is low.");
-      else if (cya > 80) messages.push("Stabilizer is high.");
-      else messages.push("Stabilizer is in range.");
-
-      if (tc > 0 && fc > 0) {
-        const cc = Math.max(0, tc - fc).toFixed(1);
-        messages.push(`Estimated combined chlorine: ${cc} ppm.`);
+      if (fc < 3) {
+        const raiseBy = 4 - fc;
+        if (sanitizerType === "calHypo" && th < idealCHMax) {
+          const lbs = lbsCalHypo(poolGallons, raiseBy, 73);
+          const cost = lbs * num("costCalHypo");
+          chemicals.push({
+            name: "Cal-Hypo",
+            amount: round(lbs, 2),
+            unit: "lb",
+            display: `${round(lbs, 2)} lb`,
+            cost: cost
+          });
+          totalCost += cost;
+          messages.push(`Free chlorine is low. Add ${round(lbs, 2)} lb of cal-hypo.`);
+        } else {
+          const gals = gallonsLiquidChlorine(poolGallons, raiseBy, 10);
+          const cost = gals * num("costLiquid");
+          chemicals.push({
+            name: "Liquid Chlorine",
+            amount: round(gals, 2),
+            unit: "gal",
+            display: formatLiquid(gals),
+            cost: cost
+          });
+          totalCost += cost;
+          messages.push(`Free chlorine is low. Add ${formatLiquid(gals)} of liquid chlorine.`);
+        }
+      } else if (fc > 7) {
+        messages.push("Free chlorine is high. Do not add sanitizer right now.");
+      } else {
+        messages.push("Free chlorine is in range.");
       }
 
-      if (bromine > 0) {
-        messages.push(`Bromine reading logged: ${bromine} ppm.`);
+      if (ph > 7.8) {
+        const gals = gallonsAcidForPH(poolGallons, ph, 7.5, ta || 100);
+        const cost = gals * num("costAcid");
+        chemicals.push({
+          name: "Muriatic Acid",
+          amount: round(gals, 2),
+          unit: "gal",
+          display: formatLiquid(gals),
+          cost: cost
+        });
+        totalCost += cost;
+        messages.push(`pH is high. Add ${formatLiquid(gals)} of muriatic acid.`);
+      } else if (ph < 7.4) {
+        if (ta < 70) {
+          const lbs = lbsBicarb(poolGallons, 80 - ta);
+          const cost = lbs * num("costBicarb");
+          chemicals.push({
+            name: "Bicarbonate",
+            amount: round(lbs, 2),
+            unit: "lb",
+            display: `${round(lbs, 2)} lb`,
+            cost: cost
+          });
+          totalCost += cost;
+          messages.push(`pH and alkalinity are low. Start with ${round(lbs, 2)} lb of bicarbonate, then retest.`);
+        } else {
+          const lbs = lbsSodaAsh(poolGallons, ph, 7.5);
+          const cost = lbs * num("costSodaAsh");
+          chemicals.push({
+            name: "Soda Ash",
+            amount: round(lbs, 2),
+            unit: "lb",
+            display: `${round(lbs, 2)} lb`,
+            cost: cost
+          });
+          totalCost += cost;
+          messages.push(`pH is low. Add ${round(lbs, 2)} lb of soda ash.`);
+        }
+      } else {
+        messages.push("pH is in range.");
       }
 
-      document.getElementById("results").innerHTML = messages.join("<br>");
+      if (ta < 70 && ph >= 7.4) {
+        const lbs = lbsBicarb(poolGallons, 80 - ta);
+        const cost = lbs * num("costBicarb");
+        chemicals.push({
+          name: "Bicarbonate",
+          amount: round(lbs, 2),
+          unit: "lb",
+          display: `${round(lbs, 2)} lb`,
+          cost: cost
+        });
+        totalCost += cost;
+        messages.push(`Total alkalinity is low. Add ${round(lbs, 2)} lb of bicarbonate.`);
+      } else if (ta > 120) {
+        messages.push("Total alkalinity is high. Lower gradually with acid and aeration.");
+      } else {
+        messages.push("Total alkalinity is in range.");
+      }
+
+      if (th < idealCHMin) {
+        messages.push(`Total hardness is low for this surface. Monitor for etching/corrosiveness.`);
+      } else if (th > idealCHMax) {
+        messages.push(`Total hardness is high for this surface. Watch for scale.`);
+      } else {
+        messages.push("Total hardness is in range.");
+      }
+
+      if (cya < idealCYAMin) {
+        const lbs = lbsStabilizer(poolGallons, idealCYATarget - cya);
+        const cost = lbs * num("costStabilizer");
+        chemicals.push({
+          name: "Stabilizer",
+          amount: round(lbs, 2),
+          unit: "lb",
+          display: `${round(lbs, 2)} lb`,
+          cost: cost
+        });
+        totalCost += cost;
+        messages.push(`Stabilizer is low. Add ${round(lbs, 2)} lb of stabilizer.`);
+      } else if (cya > idealCYAMax) {
+        messages.push("Stabilizer is high. Avoid stabilized chlorine and consider dilution.");
+      } else {
+        messages.push("Stabilizer is in range.");
+      }
+
+      if (cc > 0.5) {
+        messages.push(`Estimated combined chlorine is ${round(cc,1)} ppm. Shock/oxidize may be needed.`);
+      }
+
+      if (tb > 0) {
+        messages.push(`Total bromine reading logged: ${tb} ppm.`);
+      }
+
+      if (notes.includes("green algae")) {
+        messages.push("Green algae observed. Brush thoroughly, run system continuously, and maintain elevated chlorine.");
+      }
+      if (notes.includes("yellow algae") || notes.includes("mustard algae")) {
+        messages.push("Mustard/yellow algae observed. Treat aggressively and sanitize equipment/toys as needed.");
+      }
+      if (notes.includes("black algae")) {
+        messages.push("Black algae observed. Brush aggressively and expect repeated treatment.");
+      }
+      if (notes.includes("cloudy")) {
+        messages.push("Cloudy water observed. Check filtration, circulation, and sanitizer demand.");
+      }
+
+      const chemHtml = chemicals.length
+        ? chemicals.map(c => `<div class="chem-line"><strong>${c.name}</strong>: ${c.display} — ${formatMoney(c.cost)}</div>`).join("")
+        : `<div class="chem-line good">No chemical additions calculated right now.</div>`;
+
+      const tagHtml = [
+        `<span class="pill">Pool: ${poolGallons} gal</span>`,
+        `<span class="pill">Surface: ${surfaceType}</span>`,
+        `<span class="pill">Sanitizer: ${sanitizerType}</span>`,
+        `<span class="pill">Salt: ${saltPool}</span>`
+      ].join("");
+
+      document.getElementById("results").innerHTML = `
+        <div>${tagHtml}</div>
+        <h3>Chemical Recommendations</h3>
+        ${chemHtml}
+        <h3>Analysis Notes</h3>
+        ${messages.map(m => `<div>${m}</div>`).join("")}
+      `;
+
+      document.getElementById("visitCost").innerHTML = formatMoney(totalCost);
+
+      lastAnalysis = {
+        date: new Date().toLocaleString(),
+        test: {
+          totalHardness: th,
+          totalChlorine: tc,
+          totalBromine: tb,
+          freeChlorine: fc,
+          ph: ph,
+          totalAlkalinity: ta,
+          stabilizer: cya
+        },
+        notes: val("conditionNotes"),
+        chemicals,
+        messages,
+        totalCost: round(totalCost, 2)
+      };
     }
 
     function saveVisit() {
-      const idx = getSelectedIndex();
-      if (!customers[idx]) return;
+      const customer = getSelectedCustomer();
+      if (!customer) return;
 
-      const visit = {
-        date: new Date().toLocaleString(),
-        totalHardness: document.getElementById("totalHardness").value,
-        totalChlorine: document.getElementById("totalChlorine").value,
-        totalBromine: document.getElementById("totalBromine").value,
-        freeChlorine: document.getElementById("freeChlorine").value,
-        ph: document.getElementById("ph").value,
-        totalAlkalinity: document.getElementById("totalAlkalinity").value,
-        stabilizer: document.getElementById("stabilizer").value,
-        resultText: document.getElementById("results").innerHTML
-      };
+      if (!lastAnalysis) {
+        analyzeWater();
+      }
 
-      if (!customers[idx].history) customers[idx].history = [];
-      customers[idx].history.unshift(visit);
+      if (!customer.history) customer.history = [];
+      customer.history.unshift(lastAnalysis);
 
       saveAll();
       renderHistory();
+      renderCustomerTotals();
     }
 
     function renderHistory() {
-      const idx = getSelectedIndex();
+      const customer = getSelectedCustomer();
       const historyEl = document.getElementById("history");
       historyEl.innerHTML = "";
 
-      if (!customers[idx] || !customers[idx].history || customers[idx].history.length === 0) {
+      if (!customer || !customer.history || customer.history.length === 0) {
         historyEl.innerHTML = '<div class="muted">No visit history yet.</div>';
         return;
       }
 
-      customers[idx].history.forEach((visit) => {
+      customer.history.forEach((visit) => {
+        const chemList = visit.chemicals.length
+          ? visit.chemicals.map(c => `${c.name}: ${c.display}`).join(" | ")
+          : "No chemicals added";
+
         const div = document.createElement("div");
         div.className = "history-item";
         div.innerHTML = `
           <strong>${visit.date}</strong><br>
-          TH: ${visit.totalHardness || "-"} ppm |
-          TC: ${visit.totalChlorine || "-"} ppm |
-          TB: ${visit.totalBromine || "-"} ppm |
-          FC: ${visit.freeChlorine || "-"} ppm |
-          pH: ${visit.ph || "-"} |
-          TA: ${visit.totalAlkalinity || "-"} ppm |
-          CYA: ${visit.stabilizer || "-"} ppm
-          <div class="muted" style="margin-top:8px;">${visit.resultText || ""}</div>
+          TH: ${visit.test.totalHardness || "-"} |
+          TC: ${visit.test.totalChlorine || "-"} |
+          TB: ${visit.test.totalBromine || "-"} |
+          FC: ${visit.test.freeChlorine || "-"} |
+          pH: ${visit.test.ph || "-"} |
+          TA: ${visit.test.totalAlkalinity || "-"} |
+          CYA: ${visit.test.stabilizer || "-"}<br><br>
+          <strong>Chemicals:</strong> ${chemList}<br>
+          <strong>Visit Cost:</strong> ${formatMoney(visit.totalCost)}<br>
+          <strong>Notes:</strong> ${visit.notes || "-"}
         `;
         historyEl.appendChild(div);
       });
+    }
+
+    function renderCustomerTotals() {
+      const customer = getSelectedCustomer();
+      const el = document.getElementById("customerTotals");
+
+      if (!customer) {
+        el.innerHTML = "No customer selected.";
+        return;
+      }
+
+      const history = customer.history || [];
+      let totalCost = 0;
+      const chemTotals = {};
+
+      history.forEach(v => {
+        totalCost += v.totalCost || 0;
+        (v.chemicals || []).forEach(c => {
+          if (!chemTotals[c.name]) {
+            chemTotals[c.name] = { amount: 0, unit: c.unit };
+          }
+          chemTotals[c.name].amount += Number(c.amount || 0);
+        });
+      });
+
+      const chemLines = Object.keys(chemTotals).length
+        ? Object.entries(chemTotals).map(([name, data]) =>
+            `<div>${name}: ${round(data.amount, 2)} ${data.unit}</div>`
+          ).join("")
+        : "<div>No chemicals logged yet.</div>";
+
+      el.innerHTML = `
+        <div><strong>Total Visits:</strong> ${history.length}</div>
+        <div><strong>Total Chemical Cost:</strong> ${formatMoney(totalCost)}</div>
+        <br>
+        <div><strong>Chemical Totals</strong></div>
+        ${chemLines}
+      `;
     }
 
     document.getElementById("customerSelect").addEventListener("change", loadSelectedCustomer);
